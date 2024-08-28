@@ -45,10 +45,7 @@ all: libiosexec.$(SOVER).dylib libiosexec.a
 
 libiosexec_private.h: libiosexec_private.h.in
 ifneq (,$(SHEBANG_REDIRECT_PATH))
-	sed -e "s|@DEFAULT_PATH@|$(shell printf "%s\n" "$(DEFAULT_PATH)" | tr ':' '\n' | sed "p; s|^|$(SHEBANG_REDIRECT_PATH)|" | tr '\n' ':' | sed 's|:$$|\n|')|" -e "s|@SHEBANG_REDIRECT_PATH@|$(SHEBANG_REDIRECT_PATH)|" $^ > $@
-else
-	sed -e "s|@DEFAULT_PATH@|$(shell printf "%s\n" "$(DEFAULT_PATH)" | tr ':' '\n' | sed "p; s|^|/rootfs|" | tr '\n' ':' | sed 's|:$$|\n|')|" -e "s|@SHEBANG_REDIRECT_PATH@|$(SHEBANG_REDIRECT_PATH)|" $^ > $@
-endif
+	sed -e "s|@DEFAULT_PATH@|$(shell printf "%s\n" "$(DEFAULT_PATH)" | tr ':' '\n' | sed "p; s|^|$(DEFAULT_PATH_PREFIX)|" | tr '\n' ':' | sed 's|:$$|\n|')|" -e "s|@SHEBANG_REDIRECT_PATH@|$(SHEBANG_REDIRECT_PATH)|" $^ > $@
 
 libiosexec.$(SOVER).dylib: $(SRC:%.c=%.o)
 ifeq ($(shell uname -s), Linux)
